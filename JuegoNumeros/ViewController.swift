@@ -36,12 +36,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnIni: UIButton!
     
     @IBAction func btnReini(_ sender: UIButton) {
+        totalTime = 60
         timeFormatted(totalTime)
+        startTimer()
         for i in 0..<6 {
             number = Int.random(in: -100 ..< 100)
             arrayDesordenado.append(number)
             arrayOrdenado.append(number)
         }
+        
+        cambiarBotones()
+        arrayOrdenado.sort()
         
         btnone.isHidden = false
         btntwo.isHidden = false
@@ -49,6 +54,9 @@ class ViewController: UIViewController {
         btnfour.isHidden = false
         btnfive.isHidden = false
         btnsix.isHidden = false
+        btnIni.isHidden = true
+        
+        
  
     }
     
@@ -57,14 +65,20 @@ class ViewController: UIViewController {
     @IBAction func btnController(_ sender: UIButton) {
         if Int(sender.currentTitle!) == arrayOrdenado[0] {
             sender.isHidden = true
+            
             arrayOrdenado.removeFirst()
+            
             if arrayOrdenado.count == 0 {
+                print(totalTime)
                 print("juego terminado")
+                print(totalTime)
+                
+                if totalTime == 0 {
+                    print ("GAME OVER")
+                }
                 endTimer()
                 arrayDesordenado.removeAll()
                 btnIni.isHidden = false
-                rellenarArray()
-                cambiarBotones()
                 
             }
         }
@@ -113,6 +127,10 @@ class ViewController: UIViewController {
     
     @objc func updateTime() {
         contador.text = "\(timeFormatted(totalTime))"
+        
+        if totalTime == 0{
+            print("GAME OVER")
+        }
         
         if totalTime != 0 {
             totalTime -= 1
