@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     // Declaracion cuenta atras contador
     @IBOutlet weak var timerLabel: UILabel!
     var countdownTimer: Timer!
-    var totalTime = 60
+    var totalTime = 30
     
     @IBOutlet weak var contador: UILabel!
     
@@ -45,8 +45,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnIni: UIButton!
     
     @IBAction func btnReini(_ sender: UIButton) {
+        scoreCounter = 0
+        score.text = "\(scoreCounter)"
         gameOver.isHidden = true
-        totalTime = 60
+        totalTime = 30
         timeFormatted(totalTime)
         startTimer()
         for i in 0..<6 {
@@ -58,13 +60,7 @@ class ViewController: UIViewController {
         cambiarBotones()
         arrayOrdenado.sort()
         
-        btnone.isHidden = false
-        btntwo.isHidden = false
-        btnthree.isHidden = false
-        btnfour.isHidden = false
-        btnfive.isHidden = false
-        btnsix.isHidden = false
-        btnIni.isHidden = true
+        mostrarBotones()
         
         
  
@@ -80,17 +76,21 @@ class ViewController: UIViewController {
             arrayOrdenado.removeFirst()
             
             if arrayOrdenado.count == 0 {
-                print(totalTime)
-                print("juego terminado")
-                print(totalTime)
-                
-                if totalTime == 0 {
-                    print ("GAME OVER")
-                }
                 endTimer()
+                gameOver.text = "Felicidades sigue jugando"
                 arrayDesordenado.removeAll()
+                arrayOrdenado.removeAll()
+                gameOver.isHidden = false
                 btnIni.isHidden = false
                 
+            }
+        } else {
+            scoreCounter = scoreCounter - 20
+            score.text = "\(scoreCounter)"
+            
+            if (scoreCounter < 0){
+                endTimer()
+                finalizarJuego()
             }
         }
     }
@@ -108,6 +108,7 @@ class ViewController: UIViewController {
         cambiarBotones()
         
         arrayOrdenado.sort()
+
         
     }
 
@@ -141,12 +142,9 @@ class ViewController: UIViewController {
     @objc func updateTime() {
         contador.text = "\(timeFormatted(totalTime))"
         
-        if totalTime == 0{
-            print("GAME OVER")
-            gameOver.text = "GAME OVER"
-            gameOver.isHidden = false
-            desaparecerBotones()
-            btnIni.isHidden = false
+        print(scoreCounter)
+        if totalTime <= 0{
+            finalizarJuego()
         }
         
         if totalTime != 0 {
@@ -180,6 +178,26 @@ class ViewController: UIViewController {
         btnfive.isHidden = true
         btnsix.isHidden = true
         btnIni.isHidden = true
+    }
+    
+    func mostrarBotones() {
+        btnone.isHidden = false
+        btntwo.isHidden = false
+        btnthree.isHidden = false
+        btnfour.isHidden = false
+        btnfive.isHidden = false
+        btnsix.isHidden = false
+        btnIni.isHidden = true
+    }
+    
+    func finalizarJuego() {
+        endTimer()
+        gameOver.text = "GAME OVER"
+        gameOver.isHidden = false
+        desaparecerBotones()
+        btnIni.isHidden = false
+        arrayOrdenado.removeAll()
+        arrayDesordenado.removeAll()
     }
 
 }
