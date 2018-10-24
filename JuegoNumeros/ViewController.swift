@@ -19,6 +19,15 @@ class ViewController: UIViewController {
     // numeros Aleatorios
     var number = 0
     
+    // score inicial
+    var scoreCounter = 0
+    
+    // Label contador de score
+    @IBOutlet weak var score: UILabel!
+    
+    // Texto GAMEOVER
+    @IBOutlet weak var gameOver: UILabel!
+    
     // Declaracion cuenta atras contador
     @IBOutlet weak var timerLabel: UILabel!
     var countdownTimer: Timer!
@@ -36,6 +45,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnIni: UIButton!
     
     @IBAction func btnReini(_ sender: UIButton) {
+        gameOver.isHidden = true
         totalTime = 60
         timeFormatted(totalTime)
         startTimer()
@@ -65,7 +75,8 @@ class ViewController: UIViewController {
     @IBAction func btnController(_ sender: UIButton) {
         if Int(sender.currentTitle!) == arrayOrdenado[0] {
             sender.isHidden = true
-            
+            scoreCounter = scoreCounter + 100
+            score.text = "\(scoreCounter)"
             arrayOrdenado.removeFirst()
             
             if arrayOrdenado.count == 0 {
@@ -86,8 +97,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        score.text = "\(scoreCounter)"
         startTimer()
         btnIni.isHidden = true
+        gameOver.isHidden = true
         contador.isHidden = false
         
         rellenarArray()
@@ -130,6 +143,10 @@ class ViewController: UIViewController {
         
         if totalTime == 0{
             print("GAME OVER")
+            gameOver.text = "GAME OVER"
+            gameOver.isHidden = false
+            desaparecerBotones()
+            btnIni.isHidden = false
         }
         
         if totalTime != 0 {
@@ -153,6 +170,16 @@ class ViewController: UIViewController {
     
     @IBAction func startTimerPressed(_ sender: UIButton) {
         startTimer()
+    }
+    
+    func desaparecerBotones() {
+        btnone.isHidden = true
+        btntwo.isHidden = true
+        btnthree.isHidden = true
+        btnfour.isHidden = true
+        btnfive.isHidden = true
+        btnsix.isHidden = true
+        btnIni.isHidden = true
     }
 
 }
